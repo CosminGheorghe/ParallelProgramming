@@ -34,6 +34,11 @@ namespace ParallelProgramming
             Console.WriteLine($"Method 3 Completed by Thread={Thread.CurrentThread.ManagedThreadId}");
         }
 
+        static void NormalAction()
+        {
+            Console.WriteLine($"Method type 1, Thread={Thread.CurrentThread.ManagedThreadId}");
+        }
+
         #endregion
 
         #region Standard vs Parallel for 
@@ -149,6 +154,21 @@ namespace ParallelProgramming
 
         }
 
+        static void DifferentTypes()
+        {
+            Parallel.Invoke(
+                 NormalAction, // Invoking Normal Method
+                 delegate ()   // Invoking an inline delegate 
+                 {
+                     Console.WriteLine($"Method type 2, Thread={Thread.CurrentThread.ManagedThreadId}");
+                 },
+                () =>   // Invoking a lambda expression
+                {
+                    Console.WriteLine($"Method type 3, Thread={Thread.CurrentThread.ManagedThreadId}");
+                }
+            );
+        }
+
         #endregion
 
         static void Main(string[] args)
@@ -159,7 +179,8 @@ namespace ParallelProgramming
             //StandardForeach();
             //ParallelForeach();
             //SequentialCall();
-            ParallelInvoke();
+            //ParallelInvoke();
+            DifferentTypes();
         }
     }
 }

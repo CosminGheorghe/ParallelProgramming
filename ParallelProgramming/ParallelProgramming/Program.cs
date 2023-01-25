@@ -4,7 +4,7 @@ namespace ParallelProgramming
 {
     class Program
     {
-        #region Utility method
+        #region Utility methods
 
         static long DoSomething()
         {
@@ -14,6 +14,24 @@ namespace ParallelProgramming
                 total += i;
             }
             return total;
+        }
+
+        static void Method1()
+        {
+            Thread.Sleep(200);
+            Console.WriteLine($"Method 1 Completed by Thread={Thread.CurrentThread.ManagedThreadId}");
+        }
+
+        static void Method2()
+        {
+            Thread.Sleep(200);
+            Console.WriteLine($"Method 2 Completed by Thread={Thread.CurrentThread.ManagedThreadId}");
+        }
+
+        static void Method3()
+        {
+            Thread.Sleep(200);
+            Console.WriteLine($"Method 3 Completed by Thread={Thread.CurrentThread.ManagedThreadId}");
         }
 
         #endregion
@@ -101,13 +119,47 @@ namespace ParallelProgramming
 
         #endregion
 
+        #region Invoke example
+        
+        static void SequentialCall()
+        {
+            Stopwatch stopWatch = new Stopwatch();
+
+            stopWatch.Start();
+            
+            Method1();
+            Method2();
+            Method3();
+            stopWatch.Stop();
+
+            Console.WriteLine($"Sequential Execution Took {stopWatch.ElapsedMilliseconds} Milliseconds");
+        }
+
+        static void ParallelInvoke()
+        {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+            
+            Parallel.Invoke(
+                 Method1, Method2, Method3
+            );
+            
+            stopWatch.Stop();
+            Console.WriteLine($"Parallel Execution Took {stopWatch.ElapsedMilliseconds} Milliseconds");
+
+        }
+
+        #endregion
+
         static void Main(string[] args)
         {
 
             //StandardFor();
             //ParallelFor();
             //StandardForeach();
-            ParallelForeach();
+            //ParallelForeach();
+            //SequentialCall();
+            ParallelInvoke();
         }
     }
 }
